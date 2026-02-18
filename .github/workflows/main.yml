@@ -1,12 +1,11 @@
 name: Rust CI/CD
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 jobs:
@@ -20,30 +19,21 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install Zig
-        run: |
-          curl -L https://ziglang.org/download/0.11.0/zig-linux-x86_64-0.11.0.tar.xz -o zig.tar.xz
-          tar -xf zig.tar.xz
-          sudo mv zig-linux-x86_64-0.11.0 /opt/zig
-          echo "/opt/zig" >> $GITHUB_PATH
-
-      - name: Install cargo-zigbuild
-        run: cargo install cargo-zigbuild 
-
       - name: Build
         run: cargo build --verbose
 
       - name: Run tests
         run: cargo test --verbose
 
+      - name: Prepare Vercel output
+        run: |
+          mkdir -p .vercel/output/functions/api/rust-ci-demo.func
+          cp target/debug/rust-ci-demo .vercel/output/functions/api/rust-ci-demo.func/bootstrap
+          chmod +x .vercel/output/functions/api/rust-ci-demo.func/bootstrap
+          echo '{ "version": 3 }' > .vercel/output/config.json
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build Vercel Project
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
