@@ -25,18 +25,8 @@ jobs:
       - name: Run tests
         run: cargo test --verbose
 
-      - name: Prepare Vercel output
-        run: |
-          mkdir -p .vercel/output/functions/api/rust-ci-demo.func
-          cp target/debug/rust-ci-demo .vercel/output/functions/api/rust-ci-demo.func/bootstrap
-          chmod +x .vercel/output/functions/api/rust-ci-demo.func/bootstrap
-
-          echo '{ "runtime": "provided.al2", "handler": "bootstrap" }' > .vercel/output/functions/api/rust-ci-demo.func/.vc-config.json
-          echo '{ "version": 3 }' > .vercel/output/config.json
-
-
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel
+        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
