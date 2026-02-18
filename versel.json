@@ -5,8 +5,9 @@
     }
   },
   "routes": [
-    { "src": "/", "dest": "/api/rust-ci-demo" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/rust-ci-demo"
+    }
   ]
 }
-
-
