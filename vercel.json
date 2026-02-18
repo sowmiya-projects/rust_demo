@@ -1,13 +1,7 @@
 {
-  "functions": {
-    "api/*.rs": {
-      "runtime": "vercel-rust@4.0.0"
-    }
-  },
+  "version": 3,
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/rust-ci-demo"
-    }
+    { "src": "/api/rust-ci-demo", "dest": "/api/rust-ci-demo" }
   ]
 }
+
