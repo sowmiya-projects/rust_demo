@@ -20,6 +20,11 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Install Zig
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zig
+
       - name: Install cargo-zigbuild
         run: cargo install cargo-zigbuild 
 
