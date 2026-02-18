@@ -31,7 +31,7 @@ jobs:
           cp target/debug/rust-ci-demo .vercel/output/functions/api/rust-ci-demo.func/bootstrap
           chmod +x .vercel/output/functions/api/rust-ci-demo.func/bootstrap
 
-          echo '{ "runtime": "provided.al2" }' > .vercel/output/functions/api/rust-ci-demo.func/.vc-config.json
+          echo '{ "runtime": "provided.al2", "handler": "bootstrap" }' > .vercel/output/functions/api/rust-ci-demo.func/.vc-config.json
           echo '{ "version": 3 }' > .vercel/output/config.json
 
 
